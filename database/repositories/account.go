@@ -3,8 +3,11 @@ package repositories
 import (
 	"fmt"
 
+	"github.com/romycode/bank-manager/database"
 	"github.com/romycode/bank-manager/models"
 )
+
+var db = database.GetConnection()
 
 func GetAllAccounts() []models.Account {
 	rows, err := db.Query("SELECT * FROM accounts;", nil)

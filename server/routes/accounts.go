@@ -13,18 +13,18 @@ var accountRoutes = []Endpoint{
 		Method:  http.MethodGet,
 		Group:   accountsPath,
 		Path:    "",
-		Handler: controllers.GetAllAccounts(),
+		Handler: controllers.GetAllAccounts,
 	},
 	{
 		Method:  http.MethodPost,
 		Group:   accountsPath,
 		Path:    "",
-		Handler: controllers.CreateAccount(),
+		Handler: controllers.CreateAccount,
 	},
 	{
 		Method:  http.MethodDelete,
 		Group:   accountsPath,
 		Path:    "/:id",
-		Handler: controllers.DeleteAccount(),
+		Handler: controllers.DeleteAccount,
 	},
 }

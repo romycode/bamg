@@ -8,6 +8,6 @@ import (
 
 func HealthCheck() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		return c.JSON(http.StatusOK, "{\"data\":\"¡Alive!\"}")
+		return c.JSONBlob(http.StatusOK, []byte("{\"data\":\"¡Alive!\"}"))
 	}
 }

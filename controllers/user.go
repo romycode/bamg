@@ -6,45 +6,55 @@ import (
 
 	"github.com/labstack/echo/v4"
 
+	jsoniter "github.com/json-iterator/go"
+
 	"github.com/romycode/bank-manager/database/repositories"
+	"github.com/romycode/bank-manager/errors"
 	"github.com/romycode/bank-manager/models"
 )
 
-func GetAllUsers() echo.HandlerFunc {
-	return func(c echo.Context) error {
-		return c.JSON(
-			http.StatusOK,
-			repositories.GetAllUsers(),
-		)
-	}
+var json = jsoniter.ConfigCompatibleWithStandardLibrary
+
+type UserController struct {
+	repository repositories.UserRepository
 }
 
-func CreateUser() echo.HandlerFunc {
-	return func(c echo.Context) error {
-		u := new(models.User)
-		err := c.Bind(u)
-		if err != nil {
-			fmt.Println(err)
-		}
-
-		repositories.SaveUser(u)
-
-		return c.JSON(
-			http.StatusCreated,
-			u,
-		)
-	}
+func NewUserController(repository repositories.UserRepository) UserController {
+	return UserController{repository: repository}
 }
 
-func DeleteUser() echo.HandlerFunc {
-	return func(c echo.Context) error {
-		id := c.Param("id")
+func (uc *UserController) GetAllUsers(c echo.Context) error {
+	responseBody, err := json.Marshal(uc.repository.All())
+	errors.HandleError(err)
 
-		repositories.DeleteUser(id)
+	return c.JSONBlob(
+		http.StatusOK,
+		responseBody,
+	)
+}
 
-		return c.JSON(
-			http.StatusOK,
-			nil,
-		)
+func (uc *UserController) CreateUser(c echo.Context) error {
+	u := new(models.User)
+	err := c.Bind(u)
+	if err != nil {
+		fmt.Println(err)
 	}
+
+	uc.repository.Save(u)
+
+	return c.JSON(
+		http.StatusCreated,
+		u,
+	)
+}
+
+func (uc *UserController) DeleteUser(c echo.Context) error {
+	id := c.Param("id")
+
+	uc.repository.Delete(id)
+
+	return c.JSON(
+		http.StatusOK,
+		nil,
+	)
 }

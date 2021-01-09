@@ -1,28 +1,37 @@
 package repositories
 
 import (
-	"fmt"
+	"database/sql"
 
-	"github.com/romycode/bank-manager/database"
+	"github.com/romycode/bank-manager/errors"
 
 	"github.com/romycode/bank-manager/models"
 )
 
-var db = database.GetConnection()
+type UserRepository interface {
+	All() []models.UserInfo
+	Save(u *models.User)
+	Delete(id string)
+}
 
-func GetAllUsers() []models.UserInfo {
-	rows, err := db.Query("SELECT * FROM users;", nil)
-	if err != nil {
-		fmt.Println(err)
-	}
+type SqliteUserRepository struct {
+	db *sql.DB
+}
+
+func NewSqliteUserRepository(db *sql.DB) UserRepository {
+	return SqliteUserRepository{db: db}
+}
+
+func (ur SqliteUserRepository) All() []models.UserInfo {
+	rows, err := ur.db.Query("SELECT * FROM users;", nil)
+	errors.HandleError(err)
 	defer rows.Close()
+
 	var users []models.UserInfo
 	for rows.Next() {
 		u := *new(models.User)
 		err := rows.Scan(&u.ID, &u.Name, &u.Email)
-		if err != nil {
-			fmt.Println(err)
-		}
+		errors.HandleError(err)
 		accounts := GetAccountByUserId(u.ID)
 		users = append(users, models.UserInfo{
 			User:     u,
@@ -32,21 +41,15 @@ func GetAllUsers() []models.UserInfo {
 	return users
 }
 
-func SaveUser(u *models.User) {
-	stmt, err := db.Prepare("INSERT INTO users VALUES (?, ?, ?);")
-	if err != nil {
-		fmt.Println(err)
-	}
+func (ur SqliteUserRepository) Save(u *models.User) {
+	stmt, err := ur.db.Prepare("INSERT INTO users VALUES (?, ?, ?);")
+	errors.HandleError(err)
 	_, err = stmt.Exec(u.ID, u.Name, u.Email)
-	if err != nil {
-		fmt.Println(err)
-	}
+	errors.HandleError(err)
 }
 
-func DeleteUser(id string) {
-	stmt, _ := db.Prepare("DELETE FROM users WHERE id = ?;")
+func (ur SqliteUserRepository) Delete(id string) {
+	stmt, _ := ur.db.Prepare("DELETE FROM users WHERE id = ?;")
 	_, err := stmt.Exec(id)
-	if err != nil {
-		fmt.Println(err)
-	}
+	errors.HandleError(err)
 }

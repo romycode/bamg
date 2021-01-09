@@ -10,42 +10,36 @@ import (
 	"github.com/romycode/bank-manager/models"
 )
 
-func GetAllAccounts() echo.HandlerFunc {
-	return func(c echo.Context) error {
-		return c.JSON(
-			http.StatusOK,
-			repositories.GetAllAccounts(),
-		)
-	}
+func GetAllAccounts(c echo.Context) error {
+	return c.JSON(
+		http.StatusOK,
+		repositories.GetAllAccounts(),
+	)
 }
 
-func CreateAccount() echo.HandlerFunc {
-	return func(c echo.Context) error {
-		a := new(models.Account)
-		err := c.Bind(a)
-		if err != nil {
-			fmt.Println(err)
-		}
-		a.IBAN = models.NewIban()
-
-		repositories.SaveAccount(a)
-
-		return c.JSON(
-			http.StatusCreated,
-			a,
-		)
+func CreateAccount(c echo.Context) error {
+	a := new(models.Account)
+	err := c.Bind(a)
+	if err != nil {
+		fmt.Println(err)
 	}
+	a.IBAN = models.NewIban()
+
+	repositories.SaveAccount(a)
+
+	return c.JSON(
+		http.StatusCreated,
+		a,
+	)
 }
 
-func DeleteAccount() echo.HandlerFunc {
-	return func(c echo.Context) error {
-		id := c.Param("id")
+func DeleteAccount(c echo.Context) error {
+	id := c.Param("id")
 
-		repositories.DeleteAccount(id)
+	repositories.DeleteAccount(id)
 
-		return c.JSON(
-			http.StatusOK,
-			nil,
-		)
-	}
+	return c.JSON(
+		http.StatusOK,
+		nil,
+	)
 }
