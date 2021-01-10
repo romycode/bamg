@@ -11,7 +11,6 @@ var accountRepository = repositories.NewSqliteAccountRepository(db)
 var accountController = controllers.NewAccountController(accountRepository)
 
 var accountsPath = "/v1/accounts"
-
 var accountRoutes = []Endpoint{
 	{
 		Method:  http.MethodGet,

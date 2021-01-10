@@ -1,21 +1,19 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/romycode/bank-manager/database/repositories"
 	"github.com/romycode/bank-manager/errors"
 	"github.com/romycode/bank-manager/models"
 )
 
 type UserController struct {
-	repository repositories.UserRepository
+	repository models.UserRepository
 }
 
-func NewUserController(repository repositories.UserRepository) UserController {
+func NewUserController(repository models.UserRepository) UserController {
 	return UserController{repository: repository}
 }
 
@@ -32,9 +30,7 @@ func (uc *UserController) GetAllUsers(c echo.Context) error {
 func (uc *UserController) CreateUser(c echo.Context) error {
 	u := new(models.User)
 	err := c.Bind(u)
-	if err != nil {
-		fmt.Println(err)
-	}
+	errors.HandleError(err)
 
 	uc.repository.Save(u)
 

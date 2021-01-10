@@ -8,18 +8,13 @@ import (
 	"github.com/romycode/bank-manager/models"
 )
 
-type UserRepository interface {
-	All() []models.UserInfo
-	Save(u *models.User)
-	Delete(id string)
-}
 
 type SqliteUserRepository struct {
 	db *sql.DB
 	ac AccountRepository
 }
 
-func NewSqliteUserRepository(db *sql.DB) UserRepository {
+func NewSqliteUserRepository(db *sql.DB) models.UserRepository {
 	return SqliteUserRepository{db: db, ac: NewSqliteAccountRepository(db)}
 }
 

@@ -1,12 +1,12 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
 
 	"github.com/romycode/bank-manager/database/repositories"
+	"github.com/romycode/bank-manager/errors"
 	"github.com/romycode/bank-manager/models"
 )
 
@@ -28,9 +28,8 @@ func (ac AccountController) GetAllAccounts(c echo.Context) error {
 func (ac AccountController) CreateAccount(c echo.Context) error {
 	a := new(models.Account)
 	err := c.Bind(a)
-	if err != nil {
-		fmt.Println(err)
-	}
+	errors.HandleError(err)
+
 	a.IBAN = models.NewIban()
 
 	ac.repository.Save(a)

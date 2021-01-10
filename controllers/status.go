@@ -6,8 +6,12 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func HealthCheck() echo.HandlerFunc {
-	return func(c echo.Context) error {
-		return c.JSONBlob(http.StatusOK, []byte("{\"data\":\"¡Alive!\"}"))
-	}
+type HealthCheckController struct{}
+
+func NewHealthCheckController() HealthCheckController {
+	return HealthCheckController{}
+}
+
+func (hc HealthCheckController) HealthCheck(c echo.Context) error {
+	return c.JSONBlob(http.StatusOK, []byte("{\"data\":\"¡Alive!\"}"))
 }
