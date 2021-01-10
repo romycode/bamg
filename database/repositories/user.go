@@ -8,10 +8,9 @@ import (
 	"github.com/romycode/bank-manager/models"
 )
 
-
 type SqliteUserRepository struct {
 	db *sql.DB
-	ac AccountRepository
+	ac models.AccountRepository
 }
 
 func NewSqliteUserRepository(db *sql.DB) models.UserRepository {
@@ -40,6 +39,7 @@ func (ur SqliteUserRepository) All() []models.UserInfo {
 func (ur SqliteUserRepository) Save(u *models.User) {
 	stmt, err := ur.db.Prepare("INSERT INTO users VALUES (?, ?, ?);")
 	errors.HandleError(err)
+
 	_, err = stmt.Exec(u.ID, u.Name, u.Email)
 	errors.HandleError(err)
 }

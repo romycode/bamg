@@ -5,16 +5,15 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/romycode/bank-manager/database/repositories"
 	"github.com/romycode/bank-manager/errors"
 	"github.com/romycode/bank-manager/models"
 )
 
 type AccountController struct {
-	repository repositories.AccountRepository
+	repository models.AccountRepository
 }
 
-func NewAccountController(repository repositories.AccountRepository) AccountController {
+func NewAccountController(repository models.AccountRepository) AccountController {
 	return AccountController{repository: repository}
 }
 

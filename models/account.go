@@ -5,12 +5,21 @@ import (
 	"time"
 )
 
-type Account struct {
-	ID     string `json:"id"`
-	UserID string `json:"userId"`
-	IBAN   string `json:"iban"`
-	Credit string `json:"credit"`
-}
+type (
+	Account struct {
+		ID     string `json:"id"`
+		UserID string `json:"userId"`
+		IBAN   string `json:"iban"`
+		Credit string `json:"credit"`
+	}
+
+	AccountRepository interface {
+		All() []Account
+		GetByUserId(usrID string) []Account
+		Save(a *Account)
+		Delete(id string)
+	}
+)
 
 // NewIban create a new fake IBAN number
 func NewIban() string {

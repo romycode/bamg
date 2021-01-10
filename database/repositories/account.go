@@ -7,18 +7,11 @@ import (
 	"github.com/romycode/bank-manager/models"
 )
 
-type AccountRepository interface {
-	All() []models.Account
-	GetByUserId(usrID string) []models.Account
-	Save(a *models.Account)
-	Delete(id string)
-}
-
 type SqliteAccountRepository struct {
 	db *sql.DB
 }
 
-func NewSqliteAccountRepository(db *sql.DB) AccountRepository {
+func NewSqliteAccountRepository(db *sql.DB) models.AccountRepository {
 	return SqliteAccountRepository{db: db}
 }
 
@@ -41,6 +34,7 @@ func (ar SqliteAccountRepository) All() []models.Account {
 	rows, err := ar.db.Query("SELECT * FROM accounts;", nil)
 	errors.HandleError(err)
 	defer rows.Close()
+
 	var accounts []models.Account
 	for rows.Next() {
 		a := *new(models.Account)
@@ -54,6 +48,7 @@ func (ar SqliteAccountRepository) All() []models.Account {
 func (ar SqliteAccountRepository) Save(a *models.Account) {
 	stmt, err := ar.db.Prepare("INSERT INTO accounts VALUES (?, ?, ?, ?);")
 	errors.HandleError(err)
+
 	_, err = stmt.Exec(a.ID, a.UserID, a.IBAN, a.Credit)
 	errors.HandleError(err)
 }
@@ -61,6 +56,7 @@ func (ar SqliteAccountRepository) Save(a *models.Account) {
 func (ar SqliteAccountRepository) Delete(id string) {
 	stmt, err := ar.db.Prepare("DELETE FROM accounts WHERE id = ?;")
 	errors.HandleError(err)
+
 	_, err = stmt.Exec(id)
 	errors.HandleError(err)
 }
