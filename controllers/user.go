@@ -6,14 +6,10 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	jsoniter "github.com/json-iterator/go"
-
 	"github.com/romycode/bank-manager/database/repositories"
 	"github.com/romycode/bank-manager/errors"
 	"github.com/romycode/bank-manager/models"
 )
-
-var json = jsoniter.ConfigCompatibleWithStandardLibrary
 
 type UserController struct {
 	repository repositories.UserRepository

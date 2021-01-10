@@ -16,10 +16,11 @@ type UserRepository interface {
 
 type SqliteUserRepository struct {
 	db *sql.DB
+	ac AccountRepository
 }
 
 func NewSqliteUserRepository(db *sql.DB) UserRepository {
-	return SqliteUserRepository{db: db}
+	return SqliteUserRepository{db: db, ac: NewSqliteAccountRepository(db)}
 }
 
 func (ur SqliteUserRepository) All() []models.UserInfo {
@@ -32,7 +33,7 @@ func (ur SqliteUserRepository) All() []models.UserInfo {
 		u := *new(models.User)
 		err := rows.Scan(&u.ID, &u.Name, &u.Email)
 		errors.HandleError(err)
-		accounts := GetAccountByUserId(u.ID)
+		accounts := ur.ac.GetByUserId(u.ID)
 		users = append(users, models.UserInfo{
 			User:     u,
 			Accounts: accounts,

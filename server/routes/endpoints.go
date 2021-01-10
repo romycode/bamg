@@ -1,6 +1,12 @@
 package routes
 
-import "github.com/labstack/echo/v4"
+import (
+	"github.com/labstack/echo/v4"
+
+	"github.com/romycode/bank-manager/database"
+)
+
+var db = database.GetConnection()
 
 type Endpoint struct {
 	Method  string

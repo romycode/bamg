@@ -10,14 +10,22 @@ import (
 	"github.com/romycode/bank-manager/models"
 )
 
-func GetAllAccounts(c echo.Context) error {
+type AccountController struct {
+	repository repositories.AccountRepository
+}
+
+func NewAccountController(repository repositories.AccountRepository) AccountController {
+	return AccountController{repository: repository}
+}
+
+func (ac AccountController) GetAllAccounts(c echo.Context) error {
 	return c.JSON(
 		http.StatusOK,
-		repositories.GetAllAccounts(),
+		ac.repository.All(),
 	)
 }
 
-func CreateAccount(c echo.Context) error {
+func (ac AccountController) CreateAccount(c echo.Context) error {
 	a := new(models.Account)
 	err := c.Bind(a)
 	if err != nil {
@@ -25,7 +33,7 @@ func CreateAccount(c echo.Context) error {
 	}
 	a.IBAN = models.NewIban()
 
-	repositories.SaveAccount(a)
+	ac.repository.Save(a)
 
 	return c.JSON(
 		http.StatusCreated,
@@ -33,10 +41,10 @@ func CreateAccount(c echo.Context) error {
 	)
 }
 
-func DeleteAccount(c echo.Context) error {
+func (ac AccountController) DeleteAccount(c echo.Context) error {
 	id := c.Param("id")
 
-	repositories.DeleteAccount(id)
+	ac.repository.Delete(id)
 
 	return c.JSON(
 		http.StatusOK,

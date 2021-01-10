@@ -4,11 +4,9 @@ import (
 	"net/http"
 
 	"github.com/romycode/bank-manager/controllers"
-	"github.com/romycode/bank-manager/database"
 	"github.com/romycode/bank-manager/database/repositories"
 )
 
-var db = database.GetConnection()
 var userRepository = repositories.NewSqliteUserRepository(db)
 var userController = controllers.NewUserController(userRepository)
 
