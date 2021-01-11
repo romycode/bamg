@@ -3,7 +3,7 @@ package database
 import (
 	"database/sql"
 
-	_ "github.com/mattn/go-sqlite3"
+	_ "github.com/mattn/go-sqlite3" // Driver to connect to SQLite3
 
 	"github.com/romycode/bank-manager/errors"
 )

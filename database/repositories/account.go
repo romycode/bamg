@@ -45,7 +45,7 @@ func (ar SqliteAccountRepository) All() []models.Account {
 	return accounts
 }
 
-func (ar SqliteAccountRepository) Save(a *models.Account) {
+func (ar SqliteAccountRepository) Save(a models.Account) {
 	stmt, err := ar.db.Prepare("INSERT INTO accounts VALUES (?, ?, ?, ?);")
 	errors.HandleError(err)
 

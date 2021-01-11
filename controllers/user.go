@@ -32,11 +32,12 @@ func (uc *UserController) CreateUser(c echo.Context) error {
 	err := c.Bind(u)
 	errors.HandleError(err)
 
-	uc.repository.Save(u)
+	uc.repository.Save(*u)
 
-	return c.JSON(
+	res, _ := json.Marshal(u)
+	return c.JSONBlob(
 		http.StatusCreated,
-		u,
+		res,
 	)
 }
 
@@ -45,8 +46,7 @@ func (uc *UserController) DeleteUser(c echo.Context) error {
 
 	uc.repository.Delete(id)
 
-	return c.JSON(
+	return c.NoContent(
 		http.StatusOK,
-		nil,
 	)
 }

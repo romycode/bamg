@@ -18,9 +18,11 @@ func NewAccountController(repository models.AccountRepository) AccountController
 }
 
 func (ac AccountController) GetAllAccounts(c echo.Context) error {
-	return c.JSON(
+	a, _ := json.Marshal(ac.repository.All())
+
+	return c.JSONBlob(
 		http.StatusOK,
-		ac.repository.All(),
+		a,
 	)
 }
 
@@ -29,13 +31,13 @@ func (ac AccountController) CreateAccount(c echo.Context) error {
 	err := c.Bind(a)
 	errors.HandleError(err)
 
-	a.IBAN = models.NewIban()
+	ac.repository.Save(*a)
 
-	ac.repository.Save(a)
+	res, _ := json.Marshal(a)
 
-	return c.JSON(
+	return c.JSONBlob(
 		http.StatusCreated,
-		a,
+		res,
 	)
 }
 
@@ -44,8 +46,7 @@ func (ac AccountController) DeleteAccount(c echo.Context) error {
 
 	ac.repository.Delete(id)
 
-	return c.JSON(
+	return c.NoContent(
 		http.StatusOK,
-		nil,
 	)
 }

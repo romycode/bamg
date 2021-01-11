@@ -14,7 +14,7 @@ type (
 
 	UserRepository interface {
 		All() []UserInfo
-		Save(u *User)
+		Save(u User)
 		Delete(id string)
 	}
 )

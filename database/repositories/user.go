@@ -36,7 +36,7 @@ func (ur SqliteUserRepository) All() []models.UserInfo {
 	return users
 }
 
-func (ur SqliteUserRepository) Save(u *models.User) {
+func (ur SqliteUserRepository) Save(u models.User) {
 	stmt, err := ur.db.Prepare("INSERT INTO users VALUES (?, ?, ?);")
 	errors.HandleError(err)
 

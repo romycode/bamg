@@ -16,7 +16,7 @@ type (
 	AccountRepository interface {
 		All() []Account
 		GetByUserId(usrID string) []Account
-		Save(a *Account)
+		Save(a Account)
 		Delete(id string)
 	}
 )
