@@ -7,7 +7,16 @@ see the api.http file to see all.
 
 To run the code copy and paste this line, inside the project folder: 
 ```bash 
-go run .
+make run
 ```
 
+If you only want to build the API, run these: 
+```bash
+make build
+```
 These would run the api in http://localhost:8080
+
+To run the test execute: 
+```bash
+make test
+```
