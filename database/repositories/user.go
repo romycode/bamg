@@ -14,10 +14,10 @@ type SqliteUserRepository struct {
 }
 
 func NewSqliteUserRepository(db *sql.DB) models.UserRepository {
-	return SqliteUserRepository{db: db, ac: NewSqliteAccountRepository(db)}
+	return &SqliteUserRepository{db: db, ac: NewSqliteAccountRepository(db)}
 }
 
-func (ur SqliteUserRepository) All() []models.UserInfo {
+func (ur *SqliteUserRepository) All() []models.UserInfo {
 	rows, err := ur.db.Query("SELECT * FROM users;", nil)
 	errors.HandleError(err)
 	defer rows.Close()
@@ -36,7 +36,7 @@ func (ur SqliteUserRepository) All() []models.UserInfo {
 	return users
 }
 
-func (ur SqliteUserRepository) Save(u models.User) {
+func (ur *SqliteUserRepository) Save(u models.User) {
 	stmt, err := ur.db.Prepare("INSERT INTO users VALUES (?, ?, ?);")
 	errors.HandleError(err)
 
@@ -44,7 +44,7 @@ func (ur SqliteUserRepository) Save(u models.User) {
 	errors.HandleError(err)
 }
 
-func (ur SqliteUserRepository) Delete(id string) {
+func (ur *SqliteUserRepository) Delete(id string) {
 	stmt, _ := ur.db.Prepare("DELETE FROM users WHERE id = ?;")
 	_, err := stmt.Exec(id)
 	errors.HandleError(err)

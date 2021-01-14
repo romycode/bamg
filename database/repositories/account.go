@@ -12,7 +12,7 @@ type SqliteAccountRepository struct {
 }
 
 func NewSqliteAccountRepository(db *sql.DB) models.AccountRepository {
-	return SqliteAccountRepository{db: db}
+	return &SqliteAccountRepository{db: db}
 }
 
 func (ar SqliteAccountRepository) GetByUserId(userID string) []models.Account {
@@ -31,13 +31,13 @@ func (ar SqliteAccountRepository) GetByUserId(userID string) []models.Account {
 }
 
 func (ar SqliteAccountRepository) All() []models.Account {
-	rows, err := ar.db.Query("SELECT * FROM accounts;", nil)
+	rows, err := ar.db.Query("SELECT * FROM accounts;")
 	errors.HandleError(err)
 	defer rows.Close()
 
 	var accounts []models.Account
 	for rows.Next() {
-		a := *new(models.Account)
+		a := models.Account{}
 		err := rows.Scan(&a.ID, &a.UserID, &a.IBAN, &a.Credit)
 		errors.HandleError(err)
 		accounts = append(accounts, a)
