@@ -2,6 +2,7 @@ package database
 
 import (
 	"database/sql"
+	"os"
 
 	_ "github.com/mattn/go-sqlite3" // Driver to connect to SQLite3
 
@@ -14,7 +15,8 @@ func GetConnection() *sql.DB {
 	if db != nil {
 		return db
 	}
-	sqlite, err := sql.Open("sqlite3", "data.db")
+	path := os.Getenv("BANK_MANAGER")
+	sqlite, err := sql.Open("sqlite3", path+"/data.db")
 	errors.HandleError(err)
 
 	createDatabase(sqlite)
