@@ -13,8 +13,8 @@ type SqliteUserRepository struct {
 	ac models.AccountRepository
 }
 
-func NewSqliteUserRepository(db *sql.DB) models.UserRepository {
-	return &SqliteUserRepository{db: db, ac: NewSqliteAccountRepository(db)}
+func NewSqliteUserRepository(db *sql.DB, ac models.AccountRepository) models.UserRepository {
+	return &SqliteUserRepository{db: db, ac: ac}
 }
 
 func (ur *SqliteUserRepository) All() []models.UserInfo {

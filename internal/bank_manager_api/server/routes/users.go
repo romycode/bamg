@@ -7,7 +7,8 @@ import (
 	"github.com/romycode/bank-manager/internal/bank_manager_api/database/repositories"
 )
 
-var userRepository = repositories.NewSqliteUserRepository(db)
+var ac = repositories.NewSqliteAccountRepository(db)
+var userRepository = repositories.NewSqliteUserRepository(db, ac)
 var userController = controllers.NewUserController(userRepository)
 
 var usersPath = "/v1/users"

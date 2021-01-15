@@ -72,6 +72,7 @@ func TestSqliteUserRepository_Save(t *testing.T) {
 func TestSqliteUserRepository_All(t *testing.T) {
 	type fields struct {
 		db *sql.DB
+		ac models.AccountRepository
 	}
 	tests := []struct {
 		name      string
@@ -87,6 +88,7 @@ func TestSqliteUserRepository_All(t *testing.T) {
 			`,
 			fields: fields{
 				db: database.GetConnection(),
+				ac: NewSqliteAccountRepository(database.GetConnection()),
 			},
 			want: nil,
 		},
@@ -101,6 +103,7 @@ func TestSqliteUserRepository_All(t *testing.T) {
 			`,
 			fields: fields{
 				db: database.GetConnection(),
+				ac: NewSqliteAccountRepository(database.GetConnection()),
 			},
 			want: []models.UserInfo{
 				{
@@ -118,7 +121,7 @@ func TestSqliteUserRepository_All(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			_, _ = tt.fields.db.Exec(tt.insertSQL)
 
-			ur := NewSqliteUserRepository(tt.fields.db)
+			ur := NewSqliteUserRepository(tt.fields.db, tt.fields.ac)
 
 			res := ur.All()
 
