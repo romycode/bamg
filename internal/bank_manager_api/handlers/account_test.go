@@ -1,4 +1,4 @@
-package controllers
+package handlers
 
 import (
 	"fmt"
@@ -36,7 +36,7 @@ func (m *mockAccountRepository) Delete(id string) {
 	m.Called(id)
 }
 
-func TestAccountController_GetAllAccounts(t *testing.T) {
+func TestAccountHandler_GetAllAccounts(t *testing.T) {
 	e := echo.New()
 	req := httptest.NewRequest(http.MethodGet, "/v1/accounts", strings.NewReader(""))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
@@ -54,7 +54,7 @@ func TestAccountController_GetAllAccounts(t *testing.T) {
 	m.AssertExpectations(t)
 }
 
-func TestAccountController_CreateAccount(t *testing.T) {
+func TestAccountHandler_CreateAccount(t *testing.T) {
 	e := echo.New()
 	iban := models.NewIban()
 
@@ -79,7 +79,7 @@ func TestAccountController_CreateAccount(t *testing.T) {
 	m.AssertExpectations(t)
 }
 
-func TestAccountController_DeleteAccount(t *testing.T) {
+func TestAccountHandler_DeleteAccount(t *testing.T) {
 	e := echo.New()
 	req := httptest.NewRequest(http.MethodDelete, "/v1/account/150798", strings.NewReader(""))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)

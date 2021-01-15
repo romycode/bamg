@@ -1,4 +1,4 @@
-package controllers
+package handlers
 
 import (
 	"net/http"
@@ -30,7 +30,7 @@ func (m *mockUserRepository) Delete(id string) {
 	m.Called(id)
 }
 
-func TestUserController_GetAllUsers(t *testing.T) {
+func TestUserHandler_GetAllUsers(t *testing.T) {
 	e := echo.New()
 	req := httptest.NewRequest(http.MethodGet, "/v1/users", strings.NewReader(""))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
@@ -52,7 +52,7 @@ func TestUserController_GetAllUsers(t *testing.T) {
 	m.AssertExpectations(t)
 }
 
-func TestUserController_CreateUser(t *testing.T) {
+func TestUserHandler_CreateUser(t *testing.T) {
 	e := echo.New()
 	req := httptest.NewRequest(http.MethodPost, "/v1/users", strings.NewReader(`{"id": "id","name": "name","email": "email"}`))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
@@ -75,7 +75,7 @@ func TestUserController_CreateUser(t *testing.T) {
 	m.AssertExpectations(t)
 }
 
-func TestUserController_DeleteUser(t *testing.T) {
+func TestUserHandler_DeleteUser(t *testing.T) {
 	e := echo.New()
 	req := httptest.NewRequest(http.MethodDelete, "/v1/users/150798", strings.NewReader(`{"id": "id","name": "name","email": "email"}`))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)

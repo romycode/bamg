@@ -1,4 +1,4 @@
-package controllers
+package handlers
 
 import (
 	"net/http"
@@ -9,15 +9,15 @@ import (
 	"github.com/romycode/bank-manager/internal/bank_manager_api/models"
 )
 
-type UserController struct {
+type UserHandler struct {
 	repository models.UserRepository
 }
 
-func NewUserController(repository models.UserRepository) UserController {
-	return UserController{repository: repository}
+func NewUserController(repository models.UserRepository) UserHandler {
+	return UserHandler{repository: repository}
 }
 
-func (uc *UserController) GetAllUsers(c echo.Context) error {
+func (uc *UserHandler) GetAllUsers(c echo.Context) error {
 	responseBody, err := json.Marshal(uc.repository.All())
 	errors.HandleError(err)
 
@@ -27,7 +27,7 @@ func (uc *UserController) GetAllUsers(c echo.Context) error {
 	)
 }
 
-func (uc *UserController) CreateUser(c echo.Context) error {
+func (uc *UserHandler) CreateUser(c echo.Context) error {
 	u := new(models.User)
 	err := c.Bind(u)
 	errors.HandleError(err)
@@ -41,7 +41,7 @@ func (uc *UserController) CreateUser(c echo.Context) error {
 	)
 }
 
-func (uc *UserController) DeleteUser(c echo.Context) error {
+func (uc *UserHandler) DeleteUser(c echo.Context) error {
 	id := c.Param("id")
 
 	uc.repository.Delete(id)

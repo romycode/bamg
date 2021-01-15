@@ -3,10 +3,10 @@ package routes
 import (
 	"net/http"
 
-	"github.com/romycode/bank-manager/internal/bank_manager_api/controllers"
+	"github.com/romycode/bank-manager/internal/bank_manager_api/handlers"
 )
 
-var healthCheckController = controllers.NewHealthCheckController()
+var healthCheckController = handlers.NewHealthCheckController()
 
 var statusRoutes = []Endpoint{
 	{
