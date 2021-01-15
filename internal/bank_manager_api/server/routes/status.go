@@ -3,7 +3,7 @@ package routes
 import (
 	"net/http"
 
-	"github.com/romycode/bank-manager/controllers"
+	"github.com/romycode/bank-manager/internal/bank_manager_api/controllers"
 )
 
 var healthCheckController = controllers.NewHealthCheckController()

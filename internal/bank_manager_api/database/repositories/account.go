@@ -3,8 +3,8 @@ package repositories
 import (
 	"database/sql"
 
-	"github.com/romycode/bank-manager/errors"
-	"github.com/romycode/bank-manager/models"
+	"github.com/romycode/bank-manager/internal/bank_manager_api/errors"
+	"github.com/romycode/bank-manager/internal/bank_manager_api/models"
 )
 
 type SqliteAccountRepository struct {

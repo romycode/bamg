@@ -3,7 +3,7 @@ package routes
 import (
 	"github.com/labstack/echo/v4"
 
-	"github.com/romycode/bank-manager/database"
+	"github.com/romycode/bank-manager/internal/bank_manager_api/database"
 )
 
 var db = database.GetConnection()

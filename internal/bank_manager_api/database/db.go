@@ -6,7 +6,7 @@ import (
 
 	_ "github.com/mattn/go-sqlite3" // Driver to connect to SQLite3
 
-	"github.com/romycode/bank-manager/errors"
+	"github.com/romycode/bank-manager/internal/bank_manager_api/errors"
 )
 
 var db *sql.DB

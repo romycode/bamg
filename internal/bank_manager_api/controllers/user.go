@@ -5,8 +5,8 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/romycode/bank-manager/errors"
-	"github.com/romycode/bank-manager/models"
+	"github.com/romycode/bank-manager/internal/bank_manager_api/errors"
+	"github.com/romycode/bank-manager/internal/bank_manager_api/models"
 )
 
 type UserController struct {

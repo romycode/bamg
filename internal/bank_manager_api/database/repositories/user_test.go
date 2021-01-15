@@ -6,8 +6,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/romycode/bank-manager/database"
-	"github.com/romycode/bank-manager/models"
+	"github.com/romycode/bank-manager/internal/bank_manager_api/database"
+	"github.com/romycode/bank-manager/internal/bank_manager_api/models"
 )
 
 func TestSqliteUserRepository_Delete(t *testing.T) {

@@ -5,7 +5,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/romycode/bank-manager/server/routes"
+	"github.com/romycode/bank-manager/internal/bank_manager_api/server/routes"
 )
 
 func Serve(port string) {

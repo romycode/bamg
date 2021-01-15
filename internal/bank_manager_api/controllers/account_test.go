@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 
-	"github.com/romycode/bank-manager/models"
+	"github.com/romycode/bank-manager/internal/bank_manager_api/models"
 )
 
 type mockAccountRepository struct {
