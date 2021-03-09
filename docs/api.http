@@ -1,5 +1,5 @@
 ### API is alive
-GET http://localhost:8080/health-check
+GET http://localhost:8888/health
 
 > {%
 client.test("API is alive", function () {

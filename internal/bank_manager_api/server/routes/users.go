@@ -4,12 +4,12 @@ import (
 	"net/http"
 
 	"github.com/romycode/bank-manager/internal/bank_manager_api/database/repositories"
-	"github.com/romycode/bank-manager/internal/bank_manager_api/handlers"
+	"github.com/romycode/bank-manager/internal/platform/server/handler/health"
 )
 
 var ac = repositories.NewSqliteAccountRepository(db)
 var userRepository = repositories.NewSqliteUserRepository(db, ac)
-var userController = handlers.NewUserController(userRepository)
+var userController = health.NewUserController(userRepository)
 
 var usersPath = "/v1/users"
 var userRoutes = []Endpoint{
