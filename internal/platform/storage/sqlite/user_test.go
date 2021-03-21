@@ -1,17 +1,19 @@
-package repositories
+package sqlite
 
 import (
+	"context"
 	"database/sql"
 	"testing"
+
+	noter "github.com/romycode/bank-manager/internal"
 
 	"github.com/stretchr/testify/assert"
 
 	"github.com/romycode/bank-manager/internal/bank_manager_api/database"
-	"github.com/romycode/bank-manager/internal/bank_manager_api/models"
 )
 
 func TestSqliteUserRepository_Delete(t *testing.T) {
-	ur := SqliteUserRepository{
+	ur := UserRepository{
 		db: database.GetConnection(),
 	}
 
@@ -25,7 +27,7 @@ func TestSqliteUserRepository_Delete(t *testing.T) {
 			VALUES(?, 'test', 'test@test.com');
 	`, userID)
 
-	ur.Delete(userID)
+	ur.Delete(context.Background(), userID)
 
 	rows, _ := ur.db.Query("SELECT * FROM users WHERE id = ?", userID)
 
@@ -38,7 +40,7 @@ func TestSqliteUserRepository_Delete(t *testing.T) {
 }
 
 func TestSqliteUserRepository_Save(t *testing.T) {
-	ur := SqliteUserRepository{
+	ur := UserRepository{
 		db: database.GetConnection(),
 	}
 
@@ -52,13 +54,13 @@ func TestSqliteUserRepository_Save(t *testing.T) {
 			VALUES(?, 'test', 'test@test.com');
 	`, userID)
 
-	u := models.User{
+	u := noter.User{
 		ID:    userID,
 		Name:  "t3stname",
 		Email: "ES00000000000000",
 	}
 
-	ur.Save(u)
+	ur.Save(context.Background(), u)
 
 	rows, _ := ur.db.Query("SELECT * FROM users WHERE id = ?", userID)
 	var count int
@@ -72,13 +74,13 @@ func TestSqliteUserRepository_Save(t *testing.T) {
 func TestSqliteUserRepository_All(t *testing.T) {
 	type fields struct {
 		db *sql.DB
-		ac models.AccountRepository
+		ac noter.AccountRepository
 	}
 	tests := []struct {
 		name      string
 		insertSQL string
 		fields    fields
-		want      []models.UserInfo
+		want      []noter.UserInfo
 	}{
 		{
 			name: "Return 0",
@@ -88,7 +90,7 @@ func TestSqliteUserRepository_All(t *testing.T) {
 			`,
 			fields: fields{
 				db: database.GetConnection(),
-				ac: NewSqliteAccountRepository(database.GetConnection()),
+				ac: NewAccountRepository(database.GetConnection()),
 			},
 			want: nil,
 		},
@@ -103,11 +105,11 @@ func TestSqliteUserRepository_All(t *testing.T) {
 			`,
 			fields: fields{
 				db: database.GetConnection(),
-				ac: NewSqliteAccountRepository(database.GetConnection()),
+				ac: NewAccountRepository(database.GetConnection()),
 			},
-			want: []models.UserInfo{
+			want: []noter.UserInfo{
 				{
-					User: models.User{
+					User: noter.User{
 						ID:    "sddkl-324-ldf",
 						Name:  "test",
 						Email: "test@test.com",
@@ -121,9 +123,9 @@ func TestSqliteUserRepository_All(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			_, _ = tt.fields.db.Exec(tt.insertSQL)
 
-			ur := NewSqliteUserRepository(tt.fields.db, tt.fields.ac)
+			ur := NewUserRepository(tt.fields.db, tt.fields.ac)
 
-			res := ur.All()
+			res := ur.All(context.Background())
 
 			assert.EqualValues(t, res, tt.want)
 		})

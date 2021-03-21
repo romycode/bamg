@@ -1,6 +1,8 @@
-package models
+package noter
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestNewIban(t *testing.T) {
 	tests := []struct {

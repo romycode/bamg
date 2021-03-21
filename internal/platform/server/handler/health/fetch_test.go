@@ -14,7 +14,7 @@ import (
 func TestHandler_Create(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 	r := gin.New()
-	r.GET("/health", CheckHandler())
+	r.GET("/health", HealthHandler())
 
 	t.Run("given a valid request it returns 200", func(t *testing.T) {
 		req, err := http.NewRequest(http.MethodGet, "/health", strings.NewReader(""))

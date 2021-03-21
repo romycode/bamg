@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func CheckHandler() gin.HandlerFunc {
+func HealthHandler() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		ctx.String(http.StatusOK, "{\"data\":\"¡Alive!\"}")
 	}

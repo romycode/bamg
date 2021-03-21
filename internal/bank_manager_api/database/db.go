@@ -2,11 +2,11 @@ package database
 
 import (
 	"database/sql"
+	"log"
 	"os"
 
 	_ "github.com/mattn/go-sqlite3" // Driver to connect to SQLite3
 
-	"github.com/romycode/bank-manager/internal/bank_manager_api/errors"
 )
 
 var db *sql.DB
@@ -17,7 +17,9 @@ func GetConnection() *sql.DB {
 	}
 	path := os.Getenv("BANK_MANAGER")
 	sqlite, err := sql.Open("sqlite3", path+"/data.db")
-	errors.HandleError(err)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	createDatabase(sqlite)
 	return sqlite
@@ -46,8 +48,12 @@ func createDatabase(sqlite *sql.DB) {
 	`
 
 	_, err = sqlite.Exec(usersTable)
-	errors.HandleError(err)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	_, err = sqlite.Exec(accountsTable)
-	errors.HandleError(err)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
