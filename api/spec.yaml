@@ -1,0 +1,164 @@
+openapi: 3.0.2
+info:
+  version: 1.0.0
+  title: Bank Manager
+  description: A basic CRUD api for common bank transactions
+  contact:
+    email: albert.romera.arm@gmail.com
+servers:
+  - url: 'http://localhost:8080/v1'
+tags:
+  - name: status
+    description: Everything about api status
+  - name: users
+    description: Everything about Users
+  - name: accounts
+    description: Everything about Account
+paths:
+  /health:
+    get:
+      tags:
+        - status
+      summary: Return the status of the api
+      responses:
+        '201':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    type: string
+                    description: Updated name of the pet
+                    example: ¡Alive!
+  /users:
+    get:
+      tags:
+        - users
+      summary: Fetch all users
+      responses:
+        '201':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Users'
+    post:
+      tags:
+        - users
+      summary: Create an user
+      requestBody:
+        description: User object that needs to be added
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        '201':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  /users/{id}:
+    delete:
+      tags:
+        - users
+      summary: Delete an user
+      parameters:
+        - name: id
+          in: path
+          description: User ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+  /accounts:
+    get:
+      tags:
+        - accounts
+      summary: Fetch all accounts
+      responses:
+        '201':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Accounts'
+    post:
+      tags:
+        - accounts
+      summary: Create an account
+      requestBody:
+        description: Account object that needs to be added
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Account'
+        required: true
+      responses:
+        '201':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+  /accounts/{id}:
+    delete:
+      tags:
+        - accounts
+      summary: Delete an account
+      parameters:
+        - name: id
+          in: path
+          description: Account ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+components:
+  schemas:
+    Users:
+      type: array
+      items:
+        $ref: '#/components/schemas/User'
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          format: name
+        email:
+          type: string
+          format: email
+        accounts:
+          type: array
+          items:
+            type: '#/components/schemas/Account'
+    Accounts:
+      type: array
+      items:
+        $ref: '#/components/schemas/Account'
+    Account:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        user_id:
+          type: string
+          format: uuid
+        iban:
+          type: string
+        credit:
+          type: number
