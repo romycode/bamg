@@ -33,6 +33,9 @@ func (ur *UserRepository) All(ctx context.Context) []noter.UserInfo {
 			log.Fatal(err)
 		}
 		accounts := ur.ac.GetByUserId(ctx, u.ID)
+		if len(accounts) == 0 {
+			accounts = make([]noter.Account, 1)
+		}
 		users = append(users, noter.UserInfo{
 			User:     u,
 			Accounts: accounts,

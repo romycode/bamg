@@ -1,7 +1,7 @@
 PROJECT_DIR=$(shell pwd)
 
 build:
-	@go build -o bank_manager cmd/bank_manager/main.go
+	@go build -o bank_manager cmd/api/main.go
 
 run: build
 	@BANK_MANAGER=$(PROJECT_DIR) ./bank_manager
